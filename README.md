@@ -1,2 +1,0 @@
-# aoudadai
-Aoudad Ai Consulting
