@@ -1017,6 +1017,96 @@ button {
 .reveal[data-delay="4"] { transition-delay: 0.4s; }
 
 /* ================================================
+   WHATSAPP FLOATING BUTTON
+   ================================================ */
+.whatsapp-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: #25D366;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+  transition: var(--transition);
+  animation: whatsappPulse 2s ease-in-out infinite;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 30px rgba(37, 211, 102, 0.55);
+  animation: none;
+}
+
+.whatsapp-float__icon {
+  width: 32px;
+  height: 32px;
+}
+
+.whatsapp-float__tooltip {
+  position: absolute;
+  right: 70px;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  color: var(--clr-text);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(10px);
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+}
+
+.whatsapp-float__tooltip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--clr-surface);
+}
+
+.whatsapp-float:hover .whatsapp-float__tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@keyframes whatsappPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); }
+  50% { box-shadow: 0 4px 30px rgba(37, 211, 102, 0.6), 0 0 0 8px rgba(37, 211, 102, 0.1); }
+}
+
+/* WhatsApp contact card */
+.contact__info-card--whatsapp:hover {
+  border-color: #25D366;
+}
+
+.contact__info-icon--whatsapp {
+  background: rgba(37, 211, 102, 0.12);
+  color: #25D366;
+}
+
+.contact__info-link {
+  color: var(--clr-text-muted);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.contact__info-link:hover {
+  color: #25D366;
+}
+
+/* ================================================
    MEDIA QUERIES EXTRAS
    ================================================ */
 @media (max-width: 480px) {
