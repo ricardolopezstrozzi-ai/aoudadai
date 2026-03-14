@@ -21,12 +21,12 @@
   --clr-border: #2a2a3a;
   --clr-border-light: #3a3a4a;
 
-  /* Acentos */
-  --clr-primary: #6c5ce7;
-  --clr-primary-light: #a29bfe;
-  --clr-primary-dark: #5a4bd1;
-  --clr-accent: #00cec9;
-  --clr-gradient: linear-gradient(135deg, var(--clr-primary), var(--clr-accent));
+  /* Acentos - Verde Esmeralda (match logo) */
+  --clr-primary: #2ecc71;
+  --clr-primary-light: #55efc4;
+  --clr-primary-dark: #1a9c5a;
+  --clr-accent: #00b894;
+  --clr-gradient: linear-gradient(135deg, var(--clr-primary-dark), var(--clr-primary), var(--clr-primary-light));
 
   /* Texto */
   --clr-text: #e8e8f0;
@@ -68,7 +68,7 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 40px rgba(108, 92, 231, 0.15);
+  --shadow-glow: 0 0 40px rgba(46, 204, 113, 0.15);
 
   /* Transiciones */
   --transition: 0.3s ease;
@@ -175,12 +175,12 @@ button {
 .btn--primary {
   background: var(--clr-gradient);
   color: #fff;
-  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
 }
 
 .btn--primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(108, 92, 231, 0.45);
+  box-shadow: 0 6px 25px rgba(46, 204, 113, 0.45);
 }
 
 .btn--outline {
@@ -238,16 +238,14 @@ button {
   z-index: 1001;
 }
 
+.nav__logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
 .nav__logo-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: var(--clr-gradient);
-  border-radius: var(--radius-sm);
-  font-size: var(--fs-xs);
-  color: #fff;
+  display: none;
 }
 
 .nav__list {
@@ -363,7 +361,7 @@ button {
   transform: translateX(-50%);
   width: 800px;
   height: 800px;
-  background: radial-gradient(circle, rgba(108, 92, 231, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(46, 204, 113, 0.12) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -476,7 +474,7 @@ button {
 
 .service-card--featured {
   border-color: var(--clr-primary);
-  background: linear-gradient(180deg, rgba(108, 92, 231, 0.05) 0%, var(--clr-surface) 100%);
+  background: linear-gradient(180deg, rgba(46, 204, 113, 0.05) 0%, var(--clr-surface) 100%);
 }
 
 .service-card__badge {
@@ -497,7 +495,7 @@ button {
   justify-content: center;
   width: 56px;
   height: 56px;
-  background: rgba(108, 92, 231, 0.1);
+  background: rgba(46, 204, 113, 0.1);
   border-radius: var(--radius-md);
   margin-bottom: var(--space-lg);
   font-size: var(--fs-xl);
@@ -590,7 +588,7 @@ button {
   justify-content: center;
   width: 44px;
   height: 44px;
-  background: rgba(108, 92, 231, 0.1);
+  background: rgba(46, 204, 113, 0.1);
   border-radius: var(--radius-sm);
   font-size: var(--fs-lg);
   color: var(--clr-primary-light);
@@ -607,15 +605,15 @@ button {
   color: var(--clr-text-dim);
 }
 
-/* Visual card (mock dashboard) */
+/* Plotly interactive chart */
 .about__visual {
   display: flex;
   justify-content: center;
 }
 
-.about__card {
+.about__chart-container {
   width: 100%;
-  max-width: 440px;
+  max-width: 500px;
   background: var(--clr-surface);
   border: 1px solid var(--clr-border);
   border-radius: var(--radius-lg);
@@ -623,59 +621,53 @@ button {
   box-shadow: var(--shadow-lg);
 }
 
-.about__card-header {
+.about__chart-header {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: var(--space-sm) var(--space-md);
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
   background: var(--clr-bg-alt);
   border-bottom: 1px solid var(--clr-border);
 }
 
-.about__card-dot {
+.about__chart-header-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.about__chart-dot {
   width: 10px;
   height: 10px;
   border-radius: var(--radius-full);
 }
 
-.about__card-dot--red { background: #ff5f56; }
-.about__card-dot--yellow { background: #ffbd2e; }
-.about__card-dot--green { background: #27c93f; }
+.about__chart-dot--red { background: #ff5f56; }
+.about__chart-dot--yellow { background: #ffbd2e; }
+.about__chart-dot--green { background: #27c93f; }
 
-.about__card-body {
-  padding: var(--space-xl);
+.about__chart-header-title {
+  font-size: var(--fs-xs);
+  color: var(--clr-text-dim);
+  font-weight: 500;
 }
 
-.about__card-line {
-  height: 8px;
-  border-radius: 4px;
-  margin-bottom: var(--space-sm);
-  background: var(--clr-border);
+#plotly-chart {
+  width: 100%;
+  height: 320px;
 }
 
-.about__card-line--short { width: 35%; }
-.about__card-line--long { width: 80%; }
-.about__card-line--medium { width: 55%; margin-bottom: var(--space-xl); }
-
-.about__card-chart {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--space-sm);
-  height: 140px;
+/* Hero logo floating */
+.hero__logo {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto var(--space-xl);
+  animation: fadeInUp 0.5s ease forwards, floatLogo 4s ease-in-out infinite 0.5s;
+  filter: drop-shadow(0 0 30px rgba(46, 204, 113, 0.3));
 }
 
-.about__card-bar {
-  flex: 1;
-  height: var(--height);
-  background: var(--clr-gradient);
-  border-radius: 4px 4px 0 0;
-  animation: growBar 1.2s ease forwards;
-  transform-origin: bottom;
-}
-
-@keyframes growBar {
-  from { transform: scaleY(0); }
-  to { transform: scaleY(1); }
+@keyframes floatLogo {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 @media (max-width: 768px) {
@@ -768,7 +760,7 @@ button {
   transform: translateX(-50%);
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(108, 92, 231, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(46, 204, 113, 0.15) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -843,7 +835,7 @@ button {
 .form__input:focus {
   outline: none;
   border-color: var(--clr-primary);
-  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.15);
 }
 
 .form__select {
@@ -889,7 +881,7 @@ button {
   justify-content: center;
   width: 44px;
   height: 44px;
-  background: rgba(108, 92, 231, 0.1);
+  background: rgba(46, 204, 113, 0.1);
   border-radius: var(--radius-sm);
   font-size: var(--fs-lg);
   color: var(--clr-primary-light);

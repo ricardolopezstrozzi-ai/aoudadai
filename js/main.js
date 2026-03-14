@@ -70,12 +70,11 @@ window.addEventListener('scroll', highlightNavLink);
 // ---- Scroll reveal animations ----
 function initRevealAnimations() {
   const revealElements = document.querySelectorAll(
-    '.service-card, .process__step, .about__feature, .contact__info-card, .about__card'
+    '.service-card, .process__step, .about__feature, .contact__info-card, .about__chart-container'
   );
 
   revealElements.forEach((el, i) => {
     el.classList.add('reveal');
-    // Stagger within parent groups
     const siblings = el.parentElement.children;
     const index = Array.from(siblings).indexOf(el);
     el.setAttribute('data-delay', Math.min(index + 1, 4));
@@ -97,6 +96,81 @@ function initRevealAnimations() {
 
 initRevealAnimations();
 
+// ---- Plotly Interactive Chart ----
+function initPlotlyChart() {
+  if (typeof Plotly === 'undefined') {
+    // Retry if Plotly hasn't loaded yet
+    setTimeout(initPlotlyChart, 500);
+    return;
+  }
+
+  const chartEl = document.getElementById('plotly-chart');
+  if (!chartEl) return;
+
+  const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const sinIA = [42, 45, 43, 47, 50, 48, 52, 55, 53, 56, 58, 60];
+  const conIA = [42, 50, 58, 68, 75, 85, 92, 105, 115, 128, 140, 155];
+
+  const trace1 = {
+    x: months,
+    y: sinIA,
+    name: 'Sin IA',
+    type: 'scatter',
+    mode: 'lines+markers',
+    line: { color: '#3a3a4a', width: 2, dash: 'dot' },
+    marker: { size: 5, color: '#3a3a4a' },
+    fill: 'tozeroy',
+    fillcolor: 'rgba(58, 58, 74, 0.1)'
+  };
+
+  const trace2 = {
+    x: months,
+    y: conIA,
+    name: 'Con Aoudad AI',
+    type: 'scatter',
+    mode: 'lines+markers',
+    line: { color: '#2ecc71', width: 3 },
+    marker: { size: 6, color: '#2ecc71' },
+    fill: 'tozeroy',
+    fillcolor: 'rgba(46, 204, 113, 0.08)'
+  };
+
+  const layout = {
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    font: { family: 'Inter, sans-serif', color: '#9595a8', size: 11 },
+    margin: { t: 20, r: 20, b: 40, l: 45 },
+    xaxis: {
+      gridcolor: 'rgba(42, 42, 58, 0.5)',
+      linecolor: 'rgba(42, 42, 58, 0.5)',
+      tickfont: { size: 10 }
+    },
+    yaxis: {
+      gridcolor: 'rgba(42, 42, 58, 0.5)',
+      linecolor: 'rgba(42, 42, 58, 0.5)',
+      tickfont: { size: 10 },
+      title: { text: 'Productividad %', font: { size: 10 } }
+    },
+    legend: {
+      x: 0.02, y: 0.98,
+      bgcolor: 'rgba(0,0,0,0)',
+      font: { size: 10 }
+    },
+    showlegend: true,
+    hovermode: 'x unified'
+  };
+
+  const config = {
+    displayModeBar: false,
+    responsive: true
+  };
+
+  Plotly.newPlot(chartEl, [trace1, trace2], layout, config);
+}
+
+// Init chart when page loads
+window.addEventListener('load', initPlotlyChart);
+
 // ---- Formulario de contacto ----
 const contactForm = document.getElementById('contact-form');
 
@@ -106,13 +180,11 @@ contactForm.addEventListener('submit', (e) => {
   const formData = new FormData(contactForm);
   const data = Object.fromEntries(formData);
 
-  // Validación básica
   if (!data.name || !data.email) {
     alert('Por favor completa los campos obligatorios.');
     return;
   }
 
-  // Simulación de envío
   const submitBtn = contactForm.querySelector('.form__submit');
   const originalText = submitBtn.innerHTML;
   submitBtn.innerHTML = '<i class="ph ph-spinner"></i> Enviando...';
@@ -120,7 +192,7 @@ contactForm.addEventListener('submit', (e) => {
 
   setTimeout(() => {
     submitBtn.innerHTML = '<i class="ph ph-check-circle"></i> ¡Mensaje Enviado!';
-    submitBtn.style.background = 'linear-gradient(135deg, #27c93f, #00cec9)';
+    submitBtn.style.background = 'linear-gradient(135deg, #1a9c5a, #55efc4)';
 
     setTimeout(() => {
       submitBtn.innerHTML = originalText;

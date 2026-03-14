@@ -27,6 +27,9 @@
   <!-- Phosphor Icons -->
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
 
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" defer></script>
+
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -34,7 +37,7 @@
   <header class="header" id="header">
     <nav class="nav container">
       <a href="#" class="nav__logo">
-        <span class="nav__logo-icon">&#9650;</span>
+        <img src="assets/logo.svg" alt="Aoudad AI" class="nav__logo-img">
         Aoudad AI
       </a>
 
@@ -64,6 +67,7 @@
     <section class="hero" id="inicio">
       <div class="hero__bg-glow"></div>
       <div class="container hero__container">
+        <img src="assets/logo.svg" alt="Aoudad AI Logo" class="hero__logo">
         <span class="hero__badge">Potenciado por Inteligencia Artificial</span>
         <h1 class="hero__title">
           Escala Montañas de Datos<br>
@@ -227,25 +231,16 @@
           </div>
         </div>
         <div class="about__visual">
-          <div class="about__card">
-            <div class="about__card-header">
-              <span class="about__card-dot about__card-dot--red"></span>
-              <span class="about__card-dot about__card-dot--yellow"></span>
-              <span class="about__card-dot about__card-dot--green"></span>
-            </div>
-            <div class="about__card-body">
-              <div class="about__card-line about__card-line--short"></div>
-              <div class="about__card-line about__card-line--long"></div>
-              <div class="about__card-line about__card-line--medium"></div>
-              <div class="about__card-chart">
-                <div class="about__card-bar" style="--height: 40%"></div>
-                <div class="about__card-bar" style="--height: 65%"></div>
-                <div class="about__card-bar" style="--height: 45%"></div>
-                <div class="about__card-bar" style="--height: 80%"></div>
-                <div class="about__card-bar" style="--height: 60%"></div>
-                <div class="about__card-bar" style="--height: 95%"></div>
+          <div class="about__chart-container">
+            <div class="about__chart-header">
+              <div class="about__chart-header-dots">
+                <span class="about__chart-dot about__chart-dot--red"></span>
+                <span class="about__chart-dot about__chart-dot--yellow"></span>
+                <span class="about__chart-dot about__chart-dot--green"></span>
               </div>
+              <span class="about__chart-header-title">Rendimiento con IA</span>
             </div>
+            <div id="plotly-chart"></div>
           </div>
         </div>
       </div>
