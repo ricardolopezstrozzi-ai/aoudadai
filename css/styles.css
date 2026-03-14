@@ -242,6 +242,7 @@ button {
   width: 36px;
   height: 36px;
   object-fit: contain;
+  border-radius: var(--radius-sm);
 }
 
 .nav__logo-icon {
@@ -658,11 +659,15 @@ button {
 
 /* Hero logo floating */
 .hero__logo {
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   margin: 0 auto var(--space-xl);
   animation: fadeInUp 0.5s ease forwards, floatLogo 4s ease-in-out infinite 0.5s;
-  filter: drop-shadow(0 0 30px rgba(46, 204, 113, 0.3));
+  filter: drop-shadow(0 0 40px rgba(46, 204, 113, 0.35));
+  border-radius: 1.5rem;
+  background: #000;
+  padding: 10px;
+  border: 1px solid rgba(46, 204, 113, 0.15);
 }
 
 @keyframes floatLogo {
