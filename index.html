@@ -316,7 +316,13 @@
         </p>
 
         <div class="contact__grid">
-          <form class="contact__form" id="contact-form" action="#" method="POST">
+          <form class="contact__form" id="contact-form" action="https://formsubmit.co/ajax/ricardo@aoudadai.com" method="POST">
+            <!-- FormSubmit config -->
+            <input type="hidden" name="_subject" value="Nuevo mensaje desde aoudadai.com">
+            <input type="hidden" name="_template" value="box">
+            <input type="text" name="_honey" style="display:none">
+            <input type="hidden" name="_captcha" value="false">
+
             <div class="form__group">
               <label for="name" class="form__label">Nombre completo</label>
               <input type="text" id="name" name="name" class="form__input" placeholder="Tu nombre" required>
@@ -333,10 +339,10 @@
               <label for="service" class="form__label">Servicio de interés</label>
               <select id="service" name="service" class="form__input form__select">
                 <option value="" disabled selected>Selecciona un servicio</option>
-                <option value="agents">Agentes IA para Negocios</option>
-                <option value="automation">Automatización con IA</option>
-                <option value="analytics">Análisis de Datos</option>
-                <option value="other">Otro</option>
+                <option value="Agentes IA para Negocios">Agentes IA para Negocios</option>
+                <option value="Automatización con IA">Automatización con IA</option>
+                <option value="Análisis de Datos">Análisis de Datos</option>
+                <option value="Otro">Otro</option>
               </select>
             </div>
             <div class="form__group form__group--full">

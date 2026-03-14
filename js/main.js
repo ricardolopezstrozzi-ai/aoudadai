@@ -171,7 +171,7 @@ function initPlotlyChart() {
 // Init chart when page loads
 window.addEventListener('load', initPlotlyChart);
 
-// ---- Formulario de contacto ----
+// ---- Formulario de contacto (FormSubmit AJAX) ----
 const contactForm = document.getElementById('contact-form');
 
 contactForm.addEventListener('submit', (e) => {
@@ -190,17 +190,38 @@ contactForm.addEventListener('submit', (e) => {
   submitBtn.innerHTML = '<i class="ph ph-spinner"></i> Enviando...';
   submitBtn.disabled = true;
 
-  setTimeout(() => {
-    submitBtn.innerHTML = '<i class="ph ph-check-circle"></i> ¡Mensaje Enviado!';
-    submitBtn.style.background = 'linear-gradient(135deg, #1a9c5a, #55efc4)';
+  fetch(contactForm.action, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(data)
+  })
+    .then(response => response.json())
+    .then(result => {
+      if (result.success) {
+        submitBtn.innerHTML = '<i class="ph ph-check-circle"></i> ¡Mensaje Enviado!';
+        submitBtn.style.background = 'linear-gradient(135deg, #1a9c5a, #55efc4)';
+        contactForm.reset();
+      } else {
+        submitBtn.innerHTML = '<i class="ph ph-warning"></i> Error al enviar';
+        submitBtn.style.background = 'linear-gradient(135deg, #c0392b, #e74c3c)';
+      }
 
-    setTimeout(() => {
-      submitBtn.innerHTML = originalText;
-      submitBtn.style.background = '';
-      submitBtn.disabled = false;
-      contactForm.reset();
-    }, 2500);
-  }, 1500);
+      setTimeout(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.style.background = '';
+        submitBtn.disabled = false;
+      }, 3000);
+    })
+    .catch(() => {
+      submitBtn.innerHTML = '<i class="ph ph-warning"></i> Error de conexión';
+      submitBtn.style.background = 'linear-gradient(135deg, #c0392b, #e74c3c)';
+
+      setTimeout(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.style.background = '';
+        submitBtn.disabled = false;
+      }, 3000);
+    });
 });
 
 // ---- Smooth scroll para links internos ----
