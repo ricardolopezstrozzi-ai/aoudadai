@@ -294,16 +294,15 @@ function clearError(input, errorEl) {
   errorEl.textContent = '';
 }
 
-// ---- Envío de formulario (FormSubmit AJAX) ----
+// ---- Envío de formulario (POST nativo con validación) ----
 contactForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-
   // Validar todos los campos antes de enviar
   const isNameValid = validateName();
   const isEmailValid = validateEmail();
   const isPhoneValid = validatePhone();
 
   if (!isNameValid || !isEmailValid || !isPhoneValid) {
+    e.preventDefault();
     // Enfocar el primer campo con error
     if (!isNameValid) nameInput.focus();
     else if (!isEmailValid) emailInput.focus();
@@ -311,58 +310,16 @@ contactForm.addEventListener('submit', (e) => {
     return;
   }
 
-  // Combinar código + teléfono para enviar completo
+  // Combinar código + teléfono antes del envío
   const phoneCode = document.getElementById('phone-code').value;
-  const fullPhone = phoneCode + ' ' + phoneInput.value;
+  phoneInput.value = phoneCode + ' ' + phoneInput.value;
 
-  const formData = new FormData(contactForm);
-  const data = Object.fromEntries(formData);
-  data.phone = fullPhone; // Reemplazar con teléfono completo
-
+  // Cambiar botón a "Enviando..."
   const submitBtn = contactForm.querySelector('.form__submit');
-  const originalText = submitBtn.innerHTML;
   submitBtn.innerHTML = '<i class="ph ph-spinner"></i> Enviando...';
   submitBtn.disabled = true;
 
-  fetch(contactForm.action, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify(data)
-  })
-    .then(response => response.json())
-    .then(result => {
-      if (result.success) {
-        submitBtn.innerHTML = '<i class="ph ph-check-circle"></i> ¡Mensaje Enviado!';
-        submitBtn.style.background = 'linear-gradient(135deg, #1a9c5a, #55efc4)';
-        contactForm.reset();
-        // Limpiar estados de validación
-        contactForm.querySelectorAll('.form__input--valid, .form__input--invalid').forEach(el => {
-          el.classList.remove('form__input--valid', 'form__input--invalid');
-        });
-        contactForm.querySelectorAll('.form__error').forEach(el => {
-          el.textContent = '';
-        });
-      } else {
-        submitBtn.innerHTML = '<i class="ph ph-warning"></i> Error al enviar';
-        submitBtn.style.background = 'linear-gradient(135deg, #c0392b, #e74c3c)';
-      }
-
-      setTimeout(() => {
-        submitBtn.innerHTML = originalText;
-        submitBtn.style.background = '';
-        submitBtn.disabled = false;
-      }, 3000);
-    })
-    .catch(() => {
-      submitBtn.innerHTML = '<i class="ph ph-warning"></i> Error de conexión';
-      submitBtn.style.background = 'linear-gradient(135deg, #c0392b, #e74c3c)';
-
-      setTimeout(() => {
-        submitBtn.innerHTML = originalText;
-        submitBtn.style.background = '';
-        submitBtn.disabled = false;
-      }, 3000);
-    });
+  // El formulario hace POST nativo — FormSubmit redirige a gracias.html
 });
 
 // ---- Smooth scroll para links internos ----
