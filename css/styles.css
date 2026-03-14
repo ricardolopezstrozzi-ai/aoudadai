@@ -847,6 +847,51 @@ button {
   padding-right: 2.5rem;
 }
 
+/* Phone field group */
+.form__phone-group {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.form__phone-code {
+  flex-shrink: 0;
+  width: 110px;
+  padding-right: 2rem;
+  font-size: var(--fs-xs);
+}
+
+.form__phone-input {
+  flex: 1;
+  letter-spacing: 0.5px;
+}
+
+/* Required asterisk */
+.form__required {
+  color: #e74c3c;
+  font-weight: 700;
+}
+
+/* Validation error messages */
+.form__error {
+  display: block;
+  font-size: var(--fs-xs);
+  color: #e74c3c;
+  margin-top: 4px;
+  min-height: 1rem;
+  transition: var(--transition);
+}
+
+/* Invalid state */
+.form__input--invalid {
+  border-color: #e74c3c !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15) !important;
+}
+
+/* Valid state */
+.form__input--valid {
+  border-color: var(--clr-primary) !important;
+}
+
 .form__textarea {
   resize: vertical;
   min-height: 100px;

@@ -171,19 +171,153 @@ function initPlotlyChart() {
 // Init chart when page loads
 window.addEventListener('load', initPlotlyChart);
 
-// ---- Formulario de contacto (FormSubmit AJAX) ----
+// ---- Validación de formulario ----
 const contactForm = document.getElementById('contact-form');
+const phoneInput = document.getElementById('phone');
+const emailInput = document.getElementById('email');
+const nameInput = document.getElementById('name');
 
+// Bloquear caracteres especiales en teléfono — solo números
+phoneInput.addEventListener('input', () => {
+  phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
+
+  // Limitar a 15 dígitos (máximo internacional)
+  if (phoneInput.value.length > 15) {
+    phoneInput.value = phoneInput.value.slice(0, 15);
+  }
+
+  validatePhone();
+});
+
+phoneInput.addEventListener('keydown', (e) => {
+  // Permitir: backspace, delete, tab, escape, enter, flechas
+  const allowed = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
+    'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+  if (allowed.includes(e.key)) return;
+
+  // Permitir Ctrl/Cmd + A, C, V, X
+  if ((e.ctrlKey || e.metaKey) && ['a', 'c', 'v', 'x'].includes(e.key.toLowerCase())) return;
+
+  // Bloquear todo excepto números
+  if (!/^[0-9]$/.test(e.key)) {
+    e.preventDefault();
+  }
+});
+
+// Bloquear pegar caracteres no numéricos
+phoneInput.addEventListener('paste', (e) => {
+  e.preventDefault();
+  const pasted = (e.clipboardData || window.clipboardData).getData('text');
+  const cleaned = pasted.replace(/[^0-9]/g, '');
+  phoneInput.value = (phoneInput.value + cleaned).slice(0, 15);
+  validatePhone();
+});
+
+function validatePhone() {
+  const errorEl = document.getElementById('phone-error');
+  const val = phoneInput.value.trim();
+
+  if (!val) {
+    showError(phoneInput, errorEl, 'Ingresa tu número de teléfono.');
+    return false;
+  }
+  if (val.length < 7) {
+    showError(phoneInput, errorEl, 'El número debe tener al menos 7 dígitos.');
+    return false;
+  }
+  clearError(phoneInput, errorEl);
+  return true;
+}
+
+// Validación de email en tiempo real
+const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+
+emailInput.addEventListener('input', () => {
+  validateEmail();
+});
+
+emailInput.addEventListener('blur', () => {
+  validateEmail();
+});
+
+function validateEmail() {
+  const errorEl = document.getElementById('email-error');
+  const val = emailInput.value.trim();
+
+  if (!val) {
+    showError(emailInput, errorEl, 'Ingresa tu correo electrónico.');
+    return false;
+  }
+  if (!val.includes('@')) {
+    showError(emailInput, errorEl, 'Agrega un correo válido. Ejemplo: tu@email.com');
+    return false;
+  }
+  if (!emailRegex.test(val)) {
+    showError(emailInput, errorEl, 'El formato del correo no es válido. Verifica que incluya @ y un dominio.');
+    return false;
+  }
+  clearError(emailInput, errorEl);
+  return true;
+}
+
+// Validación de nombre
+nameInput.addEventListener('blur', () => {
+  validateName();
+});
+
+function validateName() {
+  const errorEl = document.getElementById('name-error');
+  const val = nameInput.value.trim();
+
+  if (!val) {
+    showError(nameInput, errorEl, 'Ingresa tu nombre completo.');
+    return false;
+  }
+  if (val.length < 2) {
+    showError(nameInput, errorEl, 'El nombre debe tener al menos 2 caracteres.');
+    return false;
+  }
+  clearError(nameInput, errorEl);
+  return true;
+}
+
+// Helpers de error
+function showError(input, errorEl, message) {
+  input.classList.add('form__input--invalid');
+  input.classList.remove('form__input--valid');
+  errorEl.textContent = message;
+}
+
+function clearError(input, errorEl) {
+  input.classList.remove('form__input--invalid');
+  input.classList.add('form__input--valid');
+  errorEl.textContent = '';
+}
+
+// ---- Envío de formulario (FormSubmit AJAX) ----
 contactForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const formData = new FormData(contactForm);
-  const data = Object.fromEntries(formData);
+  // Validar todos los campos antes de enviar
+  const isNameValid = validateName();
+  const isEmailValid = validateEmail();
+  const isPhoneValid = validatePhone();
 
-  if (!data.name || !data.email) {
-    alert('Por favor completa los campos obligatorios.');
+  if (!isNameValid || !isEmailValid || !isPhoneValid) {
+    // Enfocar el primer campo con error
+    if (!isNameValid) nameInput.focus();
+    else if (!isEmailValid) emailInput.focus();
+    else if (!isPhoneValid) phoneInput.focus();
     return;
   }
+
+  // Combinar código + teléfono para enviar completo
+  const phoneCode = document.getElementById('phone-code').value;
+  const fullPhone = phoneCode + ' ' + phoneInput.value;
+
+  const formData = new FormData(contactForm);
+  const data = Object.fromEntries(formData);
+  data.phone = fullPhone; // Reemplazar con teléfono completo
 
   const submitBtn = contactForm.querySelector('.form__submit');
   const originalText = submitBtn.innerHTML;
@@ -201,6 +335,13 @@ contactForm.addEventListener('submit', (e) => {
         submitBtn.innerHTML = '<i class="ph ph-check-circle"></i> ¡Mensaje Enviado!';
         submitBtn.style.background = 'linear-gradient(135deg, #1a9c5a, #55efc4)';
         contactForm.reset();
+        // Limpiar estados de validación
+        contactForm.querySelectorAll('.form__input--valid, .form__input--invalid').forEach(el => {
+          el.classList.remove('form__input--valid', 'form__input--invalid');
+        });
+        contactForm.querySelectorAll('.form__error').forEach(el => {
+          el.textContent = '';
+        });
       } else {
         submitBtn.innerHTML = '<i class="ph ph-warning"></i> Error al enviar';
         submitBtn.style.background = 'linear-gradient(135deg, #c0392b, #e74c3c)';
